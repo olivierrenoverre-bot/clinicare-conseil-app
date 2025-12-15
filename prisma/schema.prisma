@@ -1,0 +1,396 @@
+// Schéma Prisma - Application CLINICARE Formation & Conseil
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== AUTHENTIFICATION ====================
+
+enum Role {
+  ADMIN
+  MANAGER
+  ASSISTANT
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String
+  role          Role      @default(ASSISTANT)
+  avatar        String?
+
+  progress      Progress[]
+  quizResults   QuizResult[]
+  badges        UserBadge[]
+  diagnostics   ClientDiagnostic[]
+
+  xpPoints      Int       @default(0)
+  streak        Int       @default(0)
+  lastLoginAt   DateTime?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// ==================== PRODUITS CLINICARE ====================
+
+enum Gamme {
+  GLOW
+  PURE
+  REFRESH
+  TIGHT
+  COMMUN
+}
+
+enum ProductCategory {
+  NETTOYANT
+  TONIQUE
+  ESSENCE
+  SERUM
+  AMPOULE
+  PEELING
+  MASQUE
+  CREME
+  PROTECTION
+  CONTOUR_YEUX
+}
+
+model Product {
+  id              String          @id @default(cuid())
+  name            String
+  gamme           Gamme
+  category        ProductCategory
+  contenance      String
+  description     String
+
+  actifs          String
+  indications     String
+  arguments       String
+  modeEmploi      String
+
+  precautions     String
+  nonInjectable   Boolean         @default(false)
+  usagePro        Boolean         @default(false)
+
+  imageUrl        String?
+  prixHT          Float?
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  routineSteps    RoutineStep[]
+  lessonProducts  LessonProduct[]
+}
+
+// ==================== PROTOCOLES LASER ====================
+
+enum LaserType {
+  RESOLVE
+  FRAX
+  ZOOM
+}
+
+model LaserProtocol {
+  id                  String      @id @default(cuid())
+  laserType           LaserType
+  indication          String
+  seancesRecommandees Int
+  intervalleSemaines  Int
+  description         String
+
+  parametres          LaserParameter[]
+
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+}
+
+model LaserParameter {
+  id              String        @id @default(cuid())
+  protocolId      String
+  protocol        LaserProtocol @relation(fields: [protocolId], references: [id], onDelete: Cascade)
+
+  seanceNumber    Int
+  energieMJ       Float?
+  fluenceJcm2     Float?
+  couverturePct   Float?
+  spotMm          Int?
+  passages        Int           @default(1)
+  tirsBase        Int?
+
+  notes           String?
+}
+
+// ==================== CONTRE-INDICATIONS ====================
+
+enum ContraIndicationGravity {
+  STOP
+  PRUDENCE
+  PROPHYLAXIE
+  ATTENDRE
+}
+
+model ContraIndication {
+  id          String                    @id @default(cuid())
+  code        String                    @unique
+  label       String
+  description String?
+  gravity     ContraIndicationGravity
+
+  concerneLaser   Boolean   @default(false)
+  concerneProduit Boolean   @default(false)
+  concernePeeling Boolean   @default(false)
+
+  createdAt   DateTime  @default(now())
+}
+
+// ==================== FORMATION ====================
+
+model Module {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  level       Int
+  order       Int
+  duration    Int
+
+  lessons     Lesson[]
+  quizzes     Quiz[]
+  progress    Progress[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Lesson {
+  id          String    @id @default(cuid())
+  moduleId    String
+  module      Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  title       String
+  content     String
+  videoUrl    String?
+  order       Int
+  duration    Int
+
+  products    LessonProduct[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model LessonProduct {
+  id        String   @id @default(cuid())
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, productId])
+}
+
+// ==================== QUIZ ====================
+
+enum QuestionType {
+  QCM
+  VRAI_FAUX
+  ASSOCIATION
+}
+
+model Quiz {
+  id          String      @id @default(cuid())
+  moduleId    String
+  module      Module      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String?
+  seuilReussite Int       @default(80)
+  timeLimit   Int?
+
+  questions   Question[]
+  results     QuizResult[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Question {
+  id            String        @id @default(cuid())
+  quizId        String
+  quiz          Quiz          @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  type          QuestionType
+  text          String
+  options       String
+  correctAnswer String
+  explanation   String?
+  order         Int
+  points        Int           @default(1)
+
+  createdAt     DateTime      @default(now())
+}
+
+model QuizResult {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizId      String
+  quiz        Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  score       Int
+  answers     String
+  duration    Int?
+  passed      Boolean
+
+  createdAt   DateTime  @default(now())
+
+  @@index([userId, quizId])
+}
+
+// ==================== PROGRESSION ====================
+
+model Progress {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId    String
+  module      Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  completed   Boolean   @default(false)
+  score       Int?
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  lessonsViewed String   @default("[]")
+
+  @@unique([userId, moduleId])
+}
+
+// ==================== GAMIFICATION ====================
+
+model Badge {
+  id          String      @id @default(cuid())
+  code        String      @unique
+  name        String
+  description String
+  imageUrl    String?
+  xpValue     Int         @default(0)
+
+  condition   String
+
+  users       UserBadge[]
+
+  createdAt   DateTime    @default(now())
+}
+
+model UserBadge {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId   String
+  badge     Badge     @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  earnedAt  DateTime  @default(now())
+
+  @@unique([userId, badgeId])
+}
+
+// ==================== DIAGNOSTIC CLIENT ====================
+
+enum SkinType {
+  GRASSE
+  MIXTE
+  SECHE
+  SENSIBLE
+  NORMALE
+}
+
+model ClientDiagnostic {
+  id              String    @id @default(cuid())
+
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  clientName      String?
+  clientAge       Int?
+
+  skinType        SkinType
+  phototype       Int
+  problematiques  String
+
+  gammeRecommandee Gamme
+  routineId        String?
+  routine          Routine?  @relation(fields: [routineId], references: [id])
+
+  contraIndications String
+  eligibleTraitement Boolean @default(true)
+
+  notes           String?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// ==================== ROUTINES ====================
+
+model Routine {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  gamme       Gamme
+
+  steps       RoutineStep[]
+  diagnostics ClientDiagnostic[]
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model RoutineStep {
+  id          String    @id @default(cuid())
+  routineId   String
+  routine     Routine   @relation(fields: [routineId], references: [id], onDelete: Cascade)
+
+  order       Int
+  stepName    String
+  productId   String?
+  product     Product?  @relation(fields: [productId], references: [id])
+
+  instructions String?
+  timing       Int?
+
+  @@unique([routineId, order])
+}
+
+// ==================== OBJECTIONS VENTE ====================
+
+model Objection {
+  id          String    @id @default(cuid())
+  category    String
+  triggers    String
+  question    String
+  response    String
+  arguments   String
+  tips        String
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ==================== SIMULATION VENTE ====================
+
+model Simulation {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  difficulty  Int       @default(1)
+
+  scenario    String
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
