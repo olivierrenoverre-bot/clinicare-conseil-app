@@ -671,6 +671,392 @@ const MODULE_2_LESSONS = [
   },
 ];
 
+// ============ MODULE 6 : Protocoles Laser ============
+const MODULE_6 = {
+  id: "M6",
+  title: "Protocoles Laser - RESOLVE, FRAX, ZOOM",
+  description: "Maîtrisez les paramètres et protocoles des traitements laser en cabine",
+  duration: 180,
+  level: DifficultyLevel.ADVANCED,
+  order: 6,
+  color: "#8B0000",
+  icon: "Zap",
+  xpReward: 200,
+};
+
+const MODULE_6_LESSONS = [
+  {
+    id: "M6-L1",
+    title: "Introduction aux lasers esthétiques",
+    description: "Principes fondamentaux",
+    type: LessonType.INTRO,
+    duration: 15,
+    xpReward: 15,
+    order: 1,
+    content: {
+      slides: [
+        {
+          type: "hero",
+          title: "Lasers Esthétiques",
+          content: "RESOLVE - FRAX - ZOOM",
+        },
+        {
+          type: "question",
+          title: "Question d'ouverture",
+          content: "Quelle est votre plus grande appréhension concernant l'utilisation des lasers en cabine ?",
+        },
+        {
+          type: "list",
+          title: "Pourquoi maîtriser les lasers ?",
+          items: [
+            { icon: "💎", text: "Premium : Les soins laser représentent le segment le plus rentable" },
+            { icon: "🎯", text: "Résultats : Efficacité supérieure aux soins cosmétiques seuls" },
+            { icon: "⚡", text: "Technologie : Positionnement haut de gamme" },
+          ],
+        },
+        {
+          type: "objectives",
+          title: "À la fin de ce module, vous saurez :",
+          items: [
+            { text: "Comprendre les principes de base des 3 types de laser" },
+            { text: "Maîtriser les paramètres séance par séance" },
+            { text: "Identifier les contre-indications absolues et relatives" },
+            { text: "Appliquer les protocoles de sécurité" },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "M6-L2",
+    title: "Les 3 types de laser",
+    description: "RESOLVE, FRAX et ZOOM",
+    type: LessonType.THEORY,
+    duration: 25,
+    xpReward: 20,
+    order: 2,
+    content: {
+      slides: [
+        {
+          type: "hero",
+          title: "3 Lasers, 3 Actions",
+          content: "Chaque laser a ses indications spécifiques",
+        },
+        {
+          type: "grid",
+          title: "Vue d'ensemble",
+          items: [
+            { name: "RESOLVE", benefit: "Fractionné non-ablatif 1540nm", icon: "🔴" },
+            { name: "FRAX", benefit: "Fractionné ablatif CO2 10600nm", icon: "🟢" },
+            { name: "ZOOM", benefit: "Q-Switched Nd:YAG 1064/532nm", icon: "🔵" },
+          ],
+        },
+        {
+          type: "comparison",
+          title: "Non-ablatif vs Ablatif",
+          left: {
+            title: "Non-ablatif (RESOLVE)",
+            items: [
+              "Ne détruit pas l'épiderme",
+              "Chauffe le derme en profondeur",
+              "Downtime minimal (1-2 jours)",
+              "Séances multiples nécessaires",
+            ],
+          },
+          right: {
+            title: "Ablatif (FRAX)",
+            items: [
+              "Crée des microcanaux dans l'épiderme",
+              "Vaporise les tissus superficiels",
+              "Downtime important (7-10 jours)",
+              "Résultats plus spectaculaires",
+            ],
+            highlight: true,
+          },
+        },
+        {
+          type: "keypoint",
+          title: "Le laser Q-Switched (ZOOM)",
+          content: "Émet des impulsions ultra-courtes (nanosecondes) qui fragmentent les pigments sans endommager les tissus environnants. Idéal pour les taches pigmentaires et les tatouages.",
+          icon: "⚡",
+        },
+      ],
+    },
+  },
+  {
+    id: "M6-L3",
+    title: "Protocole RESOLVE",
+    description: "Paramètres et indications",
+    type: LessonType.THEORY,
+    duration: 25,
+    xpReward: 25,
+    order: 3,
+    content: {
+      slides: [
+        {
+          type: "hero",
+          title: "RESOLVE",
+          content: "Laser fractionné non-ablatif 1540nm",
+        },
+        {
+          type: "list",
+          title: "Indications RESOLVE",
+          items: [
+            { icon: "✅", text: "Rides fines et ridules" },
+            { icon: "✅", text: "Texture irrégulière de la peau" },
+            { icon: "✅", text: "Cicatrices d'acné légères à modérées" },
+            { icon: "✅", text: "Pores dilatés" },
+            { icon: "✅", text: "Relâchement cutané léger" },
+          ],
+        },
+        {
+          type: "table",
+          title: "Paramètres par séance",
+          data: [
+            { label: "Séance 1", value: "20-25 mJ | 10-12 J/cm² | 20% | Spot 7mm" },
+            { label: "Séance 2", value: "25-30 mJ | 12-14 J/cm² | 25% | Spot 7mm" },
+            { label: "Séance 3", value: "30-35 mJ | 14-16 J/cm² | 30% | Spot 7mm" },
+            { label: "Séance 4", value: "35-40 mJ | 16-18 J/cm² | 30-35% | Spot 7mm" },
+          ],
+        },
+        {
+          type: "keypoint",
+          title: "Protocole recommandé",
+          content: "3-6 séances espacées de 4-6 semaines. Toujours commencer par les paramètres les plus doux pour évaluer la tolérance.",
+          icon: "📋",
+        },
+        {
+          type: "fact",
+          title: "Phototypes compatibles",
+          content: "I à IV (prudence extrême sur phototype V)",
+          icon: "🎯",
+        },
+      ],
+    },
+  },
+  {
+    id: "M6-L4",
+    title: "Protocole FRAX",
+    description: "Resurfacing intensif CO2",
+    type: LessonType.THEORY,
+    duration: 25,
+    xpReward: 25,
+    order: 4,
+    content: {
+      slides: [
+        {
+          type: "hero",
+          title: "FRAX",
+          content: "Laser fractionné ablatif CO2 10600nm",
+        },
+        {
+          type: "list",
+          title: "Indications FRAX",
+          items: [
+            { icon: "✅", text: "Rides profondes et sillons" },
+            { icon: "✅", text: "Cicatrices atrophiques profondes" },
+            { icon: "✅", text: "Vergetures anciennes" },
+            { icon: "✅", text: "Photo-vieillissement sévère" },
+            { icon: "✅", text: "Kératoses actiniques" },
+          ],
+        },
+        {
+          type: "table",
+          title: "Paramètres par séance",
+          data: [
+            { label: "Séance 1", value: "15-20 mJ | 150-200 mJ/microspot | 10-15%" },
+            { label: "Séance 2", value: "20-25 mJ | 200-250 mJ/microspot | 15-20%" },
+            { label: "Séance 3", value: "25-30 mJ | 250-300 mJ/microspot | 20-25%" },
+          ],
+        },
+        {
+          type: "warning",
+          title: "⚠️ Précautions spécifiques FRAX",
+          content: "• Anesthésie topique OBLIGATOIRE\n• Photos avant/après obligatoires\n• Arrêt rétinoides 1 mois avant\n• CONTRE-INDIQUÉ phototypes V-VI",
+        },
+        {
+          type: "keypoint",
+          title: "Suites attendues",
+          content: "Érythème intense J1-J3, desquamation J3-J7, éviction sociale recommandée 7-10 jours. Résultats visibles dès J14.",
+          icon: "📆",
+        },
+      ],
+    },
+  },
+  {
+    id: "M6-L5",
+    title: "Protocole ZOOM",
+    description: "Lésions pigmentaires Q-Switched",
+    type: LessonType.THEORY,
+    duration: 25,
+    xpReward: 25,
+    order: 5,
+    content: {
+      slides: [
+        {
+          type: "hero",
+          title: "ZOOM",
+          content: "Laser Q-Switched Nd:YAG 1064/532nm",
+        },
+        {
+          type: "list",
+          title: "Indications ZOOM",
+          items: [
+            { icon: "✅", text: "Taches solaires (lentigos)" },
+            { icon: "✅", text: "Taches de vieillesse" },
+            { icon: "✅", text: "Mélasma superficiel (prudence !)" },
+            { icon: "✅", text: "Tatouages (toutes couleurs)" },
+            { icon: "✅", text: "Taches de rousseur (éphélides)" },
+          ],
+        },
+        {
+          type: "table",
+          title: "Paramètres par séance",
+          data: [
+            { label: "Séance 1", value: "2.5-3.0 J/cm² | Spot 3mm | 1 passage" },
+            { label: "Séance 2", value: "3.0-3.5 J/cm² | Spot 3mm | 1 passage" },
+            { label: "Séance 3", value: "3.5-4.0 J/cm² | Spot 3mm | 1 passage" },
+          ],
+        },
+        {
+          type: "keypoint",
+          title: "Endpoint clinique",
+          content: "Blanchiment immédiat de la tache = bon résultat. Si pas de blanchiment après 2 passages, ne pas insister !",
+          icon: "🎯",
+        },
+        {
+          type: "warning",
+          title: "⚠️ Règle d'or ZOOM",
+          content: "Distance pièce à main : 1-2 cm MAXIMUM de la peau. Au-delà, perte d'efficacité. En-deçà, risque de brûlure.",
+        },
+      ],
+    },
+  },
+  {
+    id: "M6-L6",
+    title: "Contre-indications laser",
+    description: "Sécurité patient",
+    type: LessonType.THEORY,
+    duration: 20,
+    xpReward: 20,
+    order: 6,
+    content: {
+      slides: [
+        {
+          type: "hero",
+          title: "Contre-indications",
+          content: "La sécurité avant tout",
+        },
+        {
+          type: "table",
+          title: "Contre-indications ABSOLUES",
+          data: [
+            { label: "Grossesse / Allaitement", value: "🔴 STOP - Reporter le traitement" },
+            { label: "Traitement Roaccutane < 6 mois", value: "🔴 STOP - Risque cicatriciel" },
+            { label: "Infection cutanée active", value: "🔴 STOP - Traiter d'abord" },
+            { label: "Herpès actif (face)", value: "🔴 STOP - Prophylaxie antivirale" },
+            { label: "Cancer cutané", value: "🔴 STOP - Avis médical obligatoire" },
+          ],
+        },
+        {
+          type: "table",
+          title: "Contre-indications RELATIVES",
+          data: [
+            { label: "Peau bronzée récente", value: "🟡 ATTENDRE 4-6 semaines" },
+            { label: "Phototype VI", value: "🟡 PRUDENCE extrême - test obligatoire" },
+            { label: "Antécédent herpès", value: "🔵 PROPHYLAXIE antivirale 5 jours avant" },
+            { label: "Peau sensibilisée (peeling récent)", value: "🟡 ATTENDRE cicatrisation complète" },
+          ],
+        },
+        {
+          type: "keypoint",
+          title: "Règle d'or",
+          content: "Dans le doute, NE PAS TRAITER. Il vaut mieux reporter une séance que créer une complication.",
+          icon: "⚖️",
+        },
+      ],
+    },
+  },
+  {
+    id: "M6-L7",
+    title: "Protocole de sécurité cabine",
+    description: "Checklist obligatoire",
+    type: LessonType.THEORY,
+    duration: 20,
+    xpReward: 20,
+    order: 7,
+    content: {
+      slides: [
+        {
+          type: "hero",
+          title: "Sécurité Laser",
+          content: "Checklist avant chaque séance",
+        },
+        {
+          type: "list",
+          title: "AVANT la séance",
+          items: [
+            { icon: "☑️", text: "Vérifier le consentement éclairé signé" },
+            { icon: "☑️", text: "Revoir les contre-indications avec le patient" },
+            { icon: "☑️", text: "Installer la signalétique LASER sur la porte" },
+            { icon: "☑️", text: "Préparer les lunettes de protection (patient + opérateur)" },
+            { icon: "☑️", text: "Retirer bijoux métalliques de la zone" },
+            { icon: "☑️", text: "Vérifier l'absence de maquillage/crème" },
+          ],
+        },
+        {
+          type: "list",
+          title: "PENDANT la séance",
+          items: [
+            { icon: "👁️", text: "Lunettes portées en PERMANENCE" },
+            { icon: "💨", text: "Aspiration des fumées si laser ablatif" },
+            { icon: "❄️", text: "Refroidissement si nécessaire (air froid, gel)" },
+            { icon: "📢", text: "Communication constante avec le patient" },
+          ],
+        },
+        {
+          type: "list",
+          title: "APRÈS la séance",
+          items: [
+            { icon: "🧊", text: "Application crème apaisante" },
+            { icon: "☀️", text: "Rappel SPF 50 obligatoire" },
+            { icon: "📝", text: "Consignes post-traitement écrites" },
+            { icon: "📅", text: "Programmation séance suivante" },
+          ],
+        },
+        {
+          type: "warning",
+          title: "⚠️ Équipement de sécurité",
+          content: "Extincteur CO2 à proximité obligatoire. Ne jamais laisser le laser sans surveillance quand il est allumé.",
+        },
+      ],
+    },
+  },
+  {
+    id: "M6-L8",
+    title: "Quiz de validation Module 6",
+    description: "Testez vos connaissances Laser",
+    type: LessonType.QUIZ,
+    duration: 25,
+    xpReward: 35,
+    order: 8,
+    content: {
+      slides: [
+        {
+          type: "hero",
+          title: "Quiz Module 6",
+          content: "Testez vos connaissances sur les protocoles laser",
+        },
+        {
+          type: "text",
+          title: "Instructions",
+          content: "Ce quiz comporte 10 questions. Vous devez obtenir au moins 80% pour valider le module. Les questions portent sur les paramètres, contre-indications et protocoles de sécurité. Bonne chance !",
+        },
+      ],
+    },
+  },
+];
+
 // ============ BADGES ============
 const BADGES = [
   {
@@ -720,6 +1106,14 @@ const BADGES = [
     description: "30 jours consécutifs",
     xpValue: 200,
     condition: "STREAK_30",
+  },
+  {
+    id: "laser-expert",
+    code: "laser-expert",
+    name: "⚡ Expert Laser",
+    description: "Terminer le Module Laser avec 100%",
+    xpValue: 100,
+    condition: "MODULE_6_PERFECT",
   },
 ];
 
@@ -795,6 +1189,24 @@ async function main() {
     });
   }
   console.log(`✅ ${MODULE_2_LESSONS.length} lessons created for Module 2`);
+
+  // Create Module 6 (Laser)
+  await prisma.module.upsert({
+    where: { id: MODULE_6.id },
+    update: MODULE_6,
+    create: MODULE_6,
+  });
+  console.log("✅ Module 6 created:", MODULE_6.title);
+
+  // Create Module 6 lessons
+  for (const lesson of MODULE_6_LESSONS) {
+    await prisma.lesson.upsert({
+      where: { id: lesson.id },
+      update: { ...lesson, moduleId: MODULE_6.id },
+      create: { ...lesson, moduleId: MODULE_6.id },
+    });
+  }
+  console.log(`✅ ${MODULE_6_LESSONS.length} lessons created for Module 6`);
 
   // Create badges
   for (const badge of BADGES) {

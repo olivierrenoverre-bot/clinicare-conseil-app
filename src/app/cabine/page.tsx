@@ -77,6 +77,26 @@ export default function CabinePage() {
             ))}
           </div>
 
+          {/* Section Laser */}
+          <Link href="/cabine/laser">
+            <Card className="border-l-4 border-l-red-800 bg-gradient-to-r from-red-50 to-orange-50 hover:shadow-lg transition-shadow cursor-pointer">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-red-800 w-12 h-12 rounded-lg flex items-center justify-center">
+                      <Zap className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-red-900">Protocoles Laser</h3>
+                      <p className="text-sm text-red-700">RESOLVE • FRAX • ZOOM</p>
+                    </div>
+                  </div>
+                  <Badge className="bg-red-800 text-white">Nouveau</Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+
           {/* Grille des gammes */}
           <section>
             <h2 className="text-lg font-semibold mb-3">Les 4 Gammes</h2>
