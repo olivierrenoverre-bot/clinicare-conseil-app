@@ -45,6 +45,8 @@ model User {
   quizResults     QuizResult[]
   badges          UserBadge[]
   diagnostics     ClientDiagnostic[]
+  solutions       Solution[]
+  solutionFavorites SolutionFavorite[]
 
   xpPoints      Int       @default(0)
   level         Int       @default(1)
@@ -436,4 +438,67 @@ model Simulation {
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+// ==================== SOLUTIONS PERSONNALISÉES ====================
+
+enum StepType {
+  LASER_RESOLVE
+  LASER_FRAX
+  LASER_ZOOM
+  PEELING_REFRESH
+  PEELING_GLOW
+  PEELING_PURE
+  CABINE_REFRESH
+  CABINE_GLOW
+  CABINE_PURE
+  CABINE_TIGHT
+  DOMICILE_REFRESH
+  DOMICILE_GLOW
+  DOMICILE_PURE
+  DOMICILE_TIGHT
+}
+
+model Solution {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  indication  String?
+  isTemplate  Boolean           @default(false)
+  isPublic    Boolean           @default(false)
+
+  createdById String?
+  createdBy   User?             @relation(fields: [createdById], references: [id])
+
+  steps       SolutionStep[]
+  favorites   SolutionFavorite[]
+
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model SolutionStep {
+  id          String    @id @default(cuid())
+  order       Int
+  type        StepType
+  name        String
+  timing      String    // "J0", "J+7", "Quotidien"
+  sameDay     Boolean   @default(false)
+  parameters  Json?     // Paramètres personnalisés (laser, peeling)
+  notes       String?
+
+  solutionId  String
+  solution    Solution  @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+}
+
+model SolutionFavorite {
+  id         String   @id @default(cuid())
+  userId     String
+  solutionId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  solution   Solution @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, solutionId])
 }

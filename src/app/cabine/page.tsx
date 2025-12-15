@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { BottomNavigation } from "@/components/features/BottomNavigation";
-import { Search, Filter, Sparkles, Droplets, Sun, Zap } from "lucide-react";
+import { Search, Filter, Sparkles, Droplets, Sun, Zap, Layers } from "lucide-react";
 import Link from "next/link";
 
 const GAMMES = [
@@ -92,6 +92,26 @@ export default function CabinePage() {
                     </div>
                   </div>
                   <Badge className="bg-red-800 text-white">Nouveau</Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Section Solutions Personnalisées */}
+          <Link href="/cabine/solutions">
+            <Card className="border-l-4 border-l-blue-600 bg-gradient-to-r from-blue-50 to-indigo-50 hover:shadow-lg transition-shadow cursor-pointer">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center">
+                      <Layers className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-blue-900">Mes Solutions</h3>
+                      <p className="text-sm text-blue-700">Créer des protocoles personnalisés</p>
+                    </div>
+                  </div>
+                  <Badge className="bg-blue-600 text-white">Nouveau</Badge>
                 </div>
               </CardContent>
             </Card>
