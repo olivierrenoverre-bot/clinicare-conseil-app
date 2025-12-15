@@ -16,6 +16,22 @@ enum Role {
   ASSISTANT
 }
 
+enum DifficultyLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum LessonType {
+  INTRO
+  THEORY
+  EXERCISE
+  QUIZ
+  VIDEO
+  SUMMARY
+}
+
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
@@ -24,12 +40,14 @@ model User {
   role          Role      @default(ASSISTANT)
   avatar        String?
 
-  progress      Progress[]
-  quizResults   QuizResult[]
-  badges        UserBadge[]
-  diagnostics   ClientDiagnostic[]
+  progress        Progress[]
+  lessonProgress  LessonProgress[]
+  quizResults     QuizResult[]
+  badges          UserBadge[]
+  diagnostics     ClientDiagnostic[]
 
   xpPoints      Int       @default(0)
+  level         Int       @default(1)
   streak        Int       @default(0)
   lastLoginAt   DateTime?
 
@@ -151,12 +169,16 @@ model ContraIndication {
 // ==================== FORMATION ====================
 
 model Module {
-  id          String    @id @default(cuid())
+  id          String          @id @default(cuid())
   title       String
   description String
-  level       Int
+  level       DifficultyLevel @default(BEGINNER)
   order       Int
   duration    Int
+  color       String          @default("#1B4F72")
+  icon        String          @default("BookOpen")
+  isActive    Boolean         @default(true)
+  xpReward    Int             @default(100)
 
   lessons     Lesson[]
   quizzes     Quiz[]
@@ -167,17 +189,21 @@ model Module {
 }
 
 model Lesson {
-  id          String    @id @default(cuid())
+  id          String      @id @default(cuid())
   moduleId    String
-  module      Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  module      Module      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
 
   title       String
-  content     String
+  description String?
+  content     Json
+  type        LessonType  @default(THEORY)
   videoUrl    String?
   order       Int
   duration    Int
+  xpReward    Int         @default(10)
 
   products    LessonProduct[]
+  progress    LessonProgress[]
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -193,29 +219,45 @@ model LessonProduct {
   @@unique([lessonId, productId])
 }
 
+model LessonProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId    String
+  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+
+  @@unique([userId, lessonId])
+}
+
 // ==================== QUIZ ====================
 
 enum QuestionType {
-  QCM
-  VRAI_FAUX
-  ASSOCIATION
+  MCQ_SINGLE
+  MCQ_MULTIPLE
+  TRUE_FALSE
+  MATCHING
+  SCENARIO
 }
 
 model Quiz {
-  id          String      @id @default(cuid())
-  moduleId    String
-  module      Module      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  id            String      @id @default(cuid())
+  moduleId      String
+  module        Module      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
 
-  title       String
-  description String?
-  seuilReussite Int       @default(80)
-  timeLimit   Int?
+  title         String
+  description   String?
+  passingScore  Int         @default(80)
+  xpReward      Int         @default(25)
+  timeLimit     Int?
 
-  questions   Question[]
-  results     QuizResult[]
+  questions     Question[]
+  results       QuizResult[]
 
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
 
 model Question {
@@ -225,11 +267,11 @@ model Question {
 
   type          QuestionType
   text          String
-  options       String
-  correctAnswer String
+  options       Json
+  correctAnswer Json
   explanation   String?
   order         Int
-  points        Int           @default(1)
+  points        Int           @default(10)
 
   createdAt     DateTime      @default(now())
 }
@@ -242,9 +284,10 @@ model QuizResult {
   quiz        Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
   score       Int
-  answers     String
+  answers     Json
   duration    Int?
   passed      Boolean
+  xpEarned    Int       @default(0)
 
   createdAt   DateTime  @default(now())
 
