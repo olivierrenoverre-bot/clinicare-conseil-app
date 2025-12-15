@@ -179,7 +179,9 @@ export default function FormationPage() {
                 modules.map((module, index) => {
                   const IconComponent = getIconComponent(module.icon);
                   const progress = getModuleProgress(module);
-                  const isLocked = index > 0 && !modules[index - 1].progress?.completed;
+                  // Désactivé pour permettre l'accès à tous les modules
+                  // const isLocked = index > 0 && !modules[index - 1].progress?.completed;
+                  const isLocked = false;
                   const isCompleted = module.progress?.completed;
 
                   return (
